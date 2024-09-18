@@ -27,7 +27,9 @@ const int COLUMNS = 25;
 const float tileSize = 64.0f;
 int m_grid[ROWS][COLUMNS]{};
 sf::RectangleShape textures[ROWS][COLUMNS];
+sf::Sprite blueGem, redGem, yellowGem, greenGem;
 sf::Text scoreScreen;
+sf::Texture blueGemText, redGemText, yellowGemText, greenGemText;
 sf::Font font;
 int score = 0;
 static bool checkForAdjacentMatch(int(&t_grid)[ROWS][COLUMNS], int& index, int& jndex) {
@@ -74,34 +76,56 @@ static bool checkForAdjacentMatch(int(&t_grid)[ROWS][COLUMNS], int& index, int& 
 	}
 }
 
-static void update() {
+static void update(sf::Vector2i& mousePos) {
+	for (int jndex = 0; jndex < COLUMNS; jndex++) //checks columns
+	{
+		for (int index = 0; index < ROWS; index++) //checks rows
+		{
+				if (textures[index][jndex].getFillColor() == sf::Color::Black)
+				{
+					// Move tiles up
+					for (int i = jndex; i > 0; i--) {
+						if (i - 1 >= 0) { // Ensure the index is in bounds
+							m_grid[index][i] = m_grid[index][i - 1];
+							textures[index][i].setFillColor(textures[index][i - 1].getFillColor());
+						}
+					}
+				}
+			std::cout << m_grid[index][jndex] << " ";
+		}
+		std::cout << std::endl;
+	}
+
 	for (int jndex = 0; jndex < COLUMNS; jndex++) //checks columns
 	{
 		for (int index = 0; index < ROWS; index++) //checks rows
 		{
 			if (checkForAdjacentMatch(m_grid, index, jndex)) //if there are 3 or more
 			{
-				score = score + 3;
-				if (textures[index][jndex].getFillColor() != sf::Color::Black) 
+				if (textures[index][jndex].getFillColor() != sf::Color::Black)
 				{
 					textures[index][jndex].setFillColor(sf::Color::Black);
-					// Move tiles up
-					for (int i = index; i >= 0; i--) {
-						m_grid[i][jndex] = m_grid[i - 1][jndex]; // Move the tile down
-						textures[i][jndex].setFillColor(textures[i - 1][jndex].getFillColor());
-					}
+					score = score + 3;
 					m_grid[0][jndex] = rand() % 4; // New random tile at the top row
 					switch (m_grid[0][jndex]) {
-					case 0: textures[0][jndex].setFillColor(sf::Color::Red); break;
-					case 1: textures[0][jndex].setFillColor(sf::Color::Blue); break;
-					case 2: textures[0][jndex].setFillColor(sf::Color::Yellow); break;
-					case 3: textures[0][jndex].setFillColor(sf::Color(127, 193, 3)); break;
+						case 0: textures[index][0].setFillColor(sf::Color::Red); break;
+						case 1: textures[index][0].setFillColor(sf::Color::Blue); break;
+						case 2: textures[index][0].setFillColor(sf::Color::Yellow); break;
+						case 3: textures[index][0].setFillColor(sf::Color(127, 193, 3)); break;
 					}
 				}
 			}
-				std::cout << m_grid[index][jndex] << " ";
 		}
-					std::cout << std::endl;
+	}
+
+	for (int jndex = 0; jndex < COLUMNS; jndex++) {
+		for (int index = 0; index < ROWS; index++) {
+			if (textures[index][jndex].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+					// Handle tile selection and swapping logic here
+				}
+			}
+		}
 	}
 	std::cout << std::endl;
 	scoreScreen.setString(std::to_string(score));
@@ -130,6 +154,7 @@ int main()
 
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 	
+	
 	for (size_t j = 0; j < COLUMNS; j++)
 	{
 		for (size_t i = 0; i < ROWS; i++)
@@ -149,7 +174,7 @@ int main()
 			switch (color)
 			{
 			case 0: textures[i][j].setFillColor(sf::Color::Red); break;
-			case 1: textures[i][j].setFillColor(sf::Color::Blue); break;
+			case 1: textures[i][j].setTexture.; break;
 			case 2: textures[i][j].setFillColor(sf::Color::Yellow); break;
 			case 3:	textures[i][j].setFillColor(sf::Color(127, 193, 3));break;
 			default:break;
@@ -163,6 +188,19 @@ int main()
 	{
 
 	}
+	if (!blueGem.loadFromFile("Blue_gem.png"))
+	{
+
+	}
+	if (!yellowGem.loadFromFile("Yellow_gem.png"))
+	{
+
+	}
+	if (!greenGem.loadFromFile("Green_gem.png"))
+	{
+
+	}
+
 	scoreScreen.setFillColor(sf::Color::White);
 	scoreScreen.setString(std::to_string(score));
 	scoreScreen.setFont(font);
@@ -170,7 +208,7 @@ int main()
 	scoreScreen.setPosition((1 * tileSize) + 1, (ROWS * tileSize) + 1);
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	const float fps{ 1.0f };
+	const float fps{ 10.0f };
 	sf::Time timePerFrame = sf::seconds(1.0f / fps); // 60 fps
 	sf::Event event;
 	
@@ -186,13 +224,14 @@ int main()
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
                 window.close();
             }
+			
         }
 
         // Ensure the game is updated at a fixed frame rate
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > timePerFrame) {
             timeSinceLastUpdate -= timePerFrame;
-            update(); // Update game logic
+            update(mousePos); // Update game logic
         }
 
         draw(window); // Draw the grid
