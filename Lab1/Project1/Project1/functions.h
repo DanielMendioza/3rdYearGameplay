@@ -29,9 +29,11 @@ bool isLeapYear(int year)
 int Reversed(int testNumber)
 {
     int revNumber = 0;
-    while (revNumber > 0)
+    int originalNumber = testNumber; // Save the original number for debugging
+    while (testNumber > 0)
     {
-
+        revNumber = revNumber * 10 + testNumber % 10; // Get the last digit and shift revNumber
+        testNumber = testNumber / 10; // Remove the last digit from testNumber
     }
     return revNumber;
 }
@@ -43,9 +45,15 @@ bool isAPalindrome(int testNumber)
     }
     return false;
 }
-bool isAPrimeNumber(int numbertoTest)
+bool isAPrimeNumber(int numberToTest)
 {
-    return false;
+    if (numberToTest <= 1) return false;
+    for (int i = 2; i * i <= numberToTest; i++)
+    {
+        if (numberToTest % i == 0)
+            return false;
+    }
+    return true;
 }
 int input5CharsConvertToInt()
 {

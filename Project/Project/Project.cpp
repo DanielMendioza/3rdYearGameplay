@@ -154,7 +154,23 @@ int main()
 
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 	
-	
+	if (!font.loadFromFile("Nau sea.otf"))
+	{
+
+	}
+	if (!blueGemText.loadFromFile("Blue_gem.png"))
+	{
+
+	}
+	if (!yellowGemText.loadFromFile("Yellow_gem.png"))
+	{
+
+	}
+	if (!greenGemText.loadFromFile("Green_gem.png"))
+	{
+
+	}
+
 	for (size_t j = 0; j < COLUMNS; j++)
 	{
 		for (size_t i = 0; i < ROWS; i++)
@@ -174,7 +190,7 @@ int main()
 			switch (color)
 			{
 			case 0: textures[i][j].setFillColor(sf::Color::Red); break;
-			case 1: textures[i][j].setTexture.; break;
+			case 1: textures[i][j].setFillColor(sf::Color::Green); break;
 			case 2: textures[i][j].setFillColor(sf::Color::Yellow); break;
 			case 3:	textures[i][j].setFillColor(sf::Color(127, 193, 3));break;
 			default:break;
@@ -184,22 +200,7 @@ int main()
 		std::cout << std::endl;
 	}
 
-	if (!font.loadFromFile("Nau sea.otf"))
-	{
-
-	}
-	if (!blueGem.loadFromFile("Blue_gem.png"))
-	{
-
-	}
-	if (!yellowGem.loadFromFile("Yellow_gem.png"))
-	{
-
-	}
-	if (!greenGem.loadFromFile("Green_gem.png"))
-	{
-
-	}
+	
 
 	scoreScreen.setFillColor(sf::Color::White);
 	scoreScreen.setString(std::to_string(score));
