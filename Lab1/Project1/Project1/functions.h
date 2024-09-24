@@ -110,56 +110,169 @@ void drawIsocelesTriangle()
         std::cout << std::endl;
     }
 }
-void drawIsocelesTriangle2()
-{
 
-}
-
-int find(int size, int arr[], int toFind)
+int find(int size, int array[], int toFind)
 {
-    return -1;
+    for (int i = 0; i < size; i++)
+    {
+        if (array[i] == toFind)
+        {
+            return i; // Return the index if the element is found
+        }
+    }
+    return -1; // Return -1 if the element is not found
 }
 int find2ndLargest(int size, int arr[])
 {
-    return -1;
+    if (size < 2) return -1; // Not enough elements
+
+    int largest = arr[0];
+    int secondLargest = -1; // Initialize as -1 since we want a simple return value if no second-largest is found.
+
+    // Find the largest element first
+    for (int i = 1; i < size; i++)
+    {
+        if (arr[i] > largest)
+        {
+            secondLargest = largest; // Move current largest to secondLargest
+            largest = arr[i]; // Update largest
+        }
+        else if (arr[i] < largest && (secondLargest == -1 || arr[i] > secondLargest))
+        {
+            secondLargest = arr[i]; // Update secondLargest if arr[i] is less than largest but greater than current secondLargest
+        }
+    }
+
+    return secondLargest; // If no valid second-largest, secondLargest remains -1
 }
+
 void copyArraytoArray(int size, int arr1[], int arr2[])
 {
-    return;
+    for (int i = 0; i < size; i++)
+    {
+        arr2[i] = arr1[i]; // Copy each element from arr1 to arr2
+    }
 }
 bool insertElement(int& size, int& count, int arr[], int elementToInsert, int insertIndex)
 {
+    if (count >= size || insertIndex < 0 || insertIndex > count)
+    {
+        return false; // Array is full or invalid index
+    }
 
-    return false;
+    // Shift elements to the right to make space
+    for (int i = count; i > insertIndex; i--)
+    {
+        arr[i] = arr[i - 1];
+    }
+
+    arr[insertIndex] = elementToInsert;
+    count++; // Increase the count of elements
+    return true;
 }
 bool deleteElement(int& size, int& count, int arr[], int deleteIndex)
 {
+    if (deleteIndex < 0 || deleteIndex >= count)
+    {
+        return false; // Invalid index
+    }
 
+    // Shift elements to the left to overwrite the element to delete
+    for (int i = deleteIndex; i < count - 1; i++)
+    {
+        arr[i] = arr[i + 1];
+    }
+
+    count--; // Decrease the count of elements
     return true;
 }
 int frequencyCount(int size, int arr[], int value)
 {
+    int count = 0;
 
-    return 0;
+    for (int i = 0; i < size; i++)
+    {
+        if (arr[i] == value)
+        {
+            count++;
+        }
+    }
+
+    return count;
 }
 int countDuplicates(int size, int arr[])
 {
+    int duplicates = 0;
 
-    return 0;
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = i + 1; j < size; j++)
+        {
+            if (arr[i] == arr[j])
+            {
+                duplicates++;
+                break; // Stop after the first duplicate
+            }
+        }
+    }
+
+    return duplicates;
 }
 void reverse(int size, int arr[])
 {
-    return;
+    for (int i = 0; i < size / 2; i++)
+    {
+        std::swap(arr[i], arr[size - i - 1]); // Swap elements from start to end
+    }
 }
-int rotateLeft(int size, int arr[])
+void rotateLeft(int size, int arr[])
 {
-    return -1;
+    if (size == 0)
+    {
+        return;
+    }
+
+    int firstElement = arr[0];
+
+    for (int i = 0; i < size - 1; i++)
+    {
+        arr[i] = arr[i + 1];
+    }
+
+    arr[size - 1] = firstElement; // Move the first element to the end
 }
 bool twoMovies(int flightLength, int movieLengths[], int size)
 {
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = i + 1; j < size; j++)
+        {
+            if (movieLengths[i] + movieLengths[j] == flightLength)
+            {
+                return true;
+            }
+        }
+    }
+
     return false;
 }
 int wordCounter(int size, char characters[])
 {
-    return 0;
-}
+    int wordCount = 0;
+    bool inWord = false;
+
+    for (int i = 0; i < size; i++)
+    {
+        if (characters[i] != ' ' && !inWord)
+        {
+            inWord = true; // We're in a word
+            wordCount++;
+        }
+        else if (characters[i] == ' ')
+        {
+            inWord = false; // End of the word
+        }
+    }
+
+    return wordCount;
+} 
