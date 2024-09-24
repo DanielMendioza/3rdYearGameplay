@@ -29,22 +29,19 @@ bool isLeapYear(int year)
 int Reversed(int testNumber)
 {
     int revNumber = 0;
-    int originalNumber = testNumber; // Save the original number for debugging
     while (testNumber > 0)
     {
-        revNumber = revNumber * 10 + testNumber % 10; // Get the last digit and shift revNumber
-        testNumber = testNumber / 10; // Remove the last digit from testNumber
+        revNumber = revNumber * 10 + testNumber % 10;
+        testNumber /= 10;
     }
     return revNumber;
 }
+
 bool isAPalindrome(int testNumber)
 {
-    if (Reversed(testNumber) == testNumber)
-    {
-        return true;
-    }
-    return false;
+    return Reversed(testNumber) == testNumber;
 }
+
 bool isAPrimeNumber(int numberToTest)
 {
     if (numberToTest <= 1) return false;
@@ -55,6 +52,7 @@ bool isAPrimeNumber(int numberToTest)
     }
     return true;
 }
+
 int input5CharsConvertToInt()
 {
     int returnInt = 0;
@@ -62,23 +60,55 @@ int input5CharsConvertToInt()
     for (int i = 0; i < 5; i++)
     {
         std::cin >> inputChar;
-        //check if its a digit.
-        //do something
-
+        if (isdigit(inputChar))
+        {
+            returnInt = returnInt * 10 + (inputChar - '0');
+        }
+        else
+        {
+            std::cout << "Invalid input!" << std::endl;
+            return -1;
+        }
     }
     return returnInt;
 }
+
 int convertBinarytoDecimal(int binaryNumber)
 {
-    return 0;
+    int decimalNumber = 0, base = 1;
+    while (binaryNumber > 0)
+    {
+        int lastDigit = binaryNumber % 10;
+        decimalNumber += lastDigit * base;
+        binaryNumber /= 10;
+        base *= 2;
+    }
+    return decimalNumber;
 }
+
 void drawRightAngledTriangle()
 {
-
+    for (int i = 1; i <= 5; i++)
+    {
+        for (int j = 1; j <= i; j++)
+        {
+            std::cout << "*";
+        }
+        std::cout << std::endl;
+    }
 }
+
 void drawIsocelesTriangle()
 {
-
+    int height = 5;
+    for (int i = 1; i <= height; i++)
+    {
+        for (int j = height - i; j > 0; j--)
+            std::cout << " ";
+        for (int k = 1; k <= (2 * i - 1); k++)
+            std::cout << "*";
+        std::cout << std::endl;
+    }
 }
 void drawIsocelesTriangle2()
 {
